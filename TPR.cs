@@ -80,6 +80,19 @@ namespace TprLibrary
                 }
             }
         }
+
+        public event EventHandler TprBuild;
+        public void OnTprBuild(TprEventArgs e)
+        {
+            TprBuild?.Invoke(this, e);
+        }   
+
+        public void Build()
+        {
+            TprEventArgs tprEventArgs = new TprEventArgs(this.Temperature, this.Pulse,
+                                                         this.Respiratory, this.Sbp, this.Dbp);
+            OnTprBuild(tprEventArgs);
+        }
     }
     public class TprEventArgs : EventArgs
     {
@@ -88,8 +101,7 @@ namespace TprLibrary
         public int Respiratory { get; private set; }
         public int Sbp { get; private set; }
         public int Dbp { get; private set; }
-        public TprEventArgs(decimal temperature, int pulse,
-           int respiratory, int sbp, int dbp)
+        public TprEventArgs(decimal temperature, int pulse, int respiratory, int sbp, int dbp)
         {
             this.Temperature = temperature;
             this.Pulse = pulse;
