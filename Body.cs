@@ -9,13 +9,13 @@ namespace TprLibrary
         protected void OnPropertyChanged(string propertyName) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        private decimal? bw = null;
+        private decimal? bw = 0;
         public decimal Bw
         {
             get => (decimal)bw;
             set
             {
-                if (value != bw)
+                if (value != bw && value > 0)
                 {
                     bw = value;
                     OnPropertyChanged(nameof(Bw));
@@ -23,13 +23,13 @@ namespace TprLibrary
             }
         }
 
-        private decimal? bh = null;
+        private decimal? bh = 0;
         public decimal Bh
         {
             get => (decimal)bh;
             set
             {
-                if (value != bh)
+                if (value != bh && value > 0)
                 {
                     bh = value;
                     OnPropertyChanged(nameof(Bh));
@@ -37,18 +37,18 @@ namespace TprLibrary
             }
         }
 
-        public event EventHandler BodyBuild;
-        public void OnBodyBuild(BodyEventArgs e)
-        {
-            BodyBuild?.Invoke(this, e);
-        }
+        public BodyRec() { }
 
-        public void Build()
+        public event EventHandler OnConfirm;
+
+        public void Confirm()
         {
             BodyEventArgs bodyEventArgs = new BodyEventArgs(this.Bw, this.Bh);
-            OnBodyBuild(bodyEventArgs);
+            // Update database
+            OnConfirm?.Invoke(this, bodyEventArgs);
         }
     }
+
     public class BodyEventArgs : EventArgs
     {
         public decimal Bw { get; private set; }
@@ -59,11 +59,18 @@ namespace TprLibrary
             this.Bh = bh;
         }
     }
+
     public static class BodyRecExt
     {
         public static int Lastest(this BodyRec body)
         {
-            // 最近一 次
+            // 最近一次
+            int uid = 0;
+            return uid;
+        }
+        public static int Insert(this BodyRec body)
+        {
+            // 新增紀錄
             int uid = 0;
             return uid;
         }
